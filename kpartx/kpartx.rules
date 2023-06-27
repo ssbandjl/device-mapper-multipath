@@ -1,0 +1,40 @@
+#
+# persistent links for device-mapper devices
+# only hardware-backed device-mapper devices (ie multipath, dmraid,
+# and kpartx) have meaningful persistent device names
+#
+
+KERNEL!="dm-*", GOTO="kpartx_end"
+ACTION=="remove", GOTO="kpartx_end"
+
+ENV{DM_TABLE_STATE}!="LIVE", GOTO="kpartx_end"
+ENV{DM_ACTION}=="PATH_FAILED|PATH_REINSTATED", GOTO="kpartx_end"
+ENV{DM_DEPS}=="0", GOTO="kpartx_end"
+
+ENV{DM_UUID}=="?*", IMPORT{program}=="kpartx_id %M %m $env{DM_UUID}"
+
+OPTIONS="link_priority=50"
+
+# Create persistent links for multipath tables
+ENV{DM_UUID}=="mpath-*", \
+	SYMLINK+="disk/by-id/$env{DM_TYPE}-$env{DM_NAME}"
+ENV{DM_MPATH}=="?*", ENV{DM_PART}!="?*", \
+	SYMLINK+="disk/by-id/$env{DM_TYPE}-$env{DM_MPATH}"
+ENV{DM_WWN}=="?*", ENV{DM_PART}!="?*", \
+	SYMLINK+="disk/by-id/wwn-$env{DM_WWN}"
+
+# Create persistent links for partitions
+ENV{DM_PART}=="?*", \
+        SYMLINK+="disk/by-id/$env{DM_TYPE}-$env{DM_NAME}-part$env{DM_PART}"
+ENV{DM_MPATH}=="?*", ENV{DM_PART}=="?*", \
+	SYMLINK+="disk/by-id/$env{DM_TYPE}-$env{DM_MPATH}-part$env{DM_PART}"
+ENV{DM_WWN}=="?*", ENV{DM_PART}=="?*", \
+	SYMLINK+="disk/by-id/wwn-$env{DM_WWN}-part$env{DM_PART}"
+
+# Create dm tables for partitions
+ENV{DM_STATE}!="SUSPENDED", ENV{DM_UUID}=="mpath-*", \
+        RUN+="/sbin/kpartx -u -p -part /dev/$name"
+
+LABEL="kpartx_end"
+
+
