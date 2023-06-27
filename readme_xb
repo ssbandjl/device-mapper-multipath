@@ -1,0 +1,201 @@
+多路径参考: https://wenku.baidu.com/view/a1dd303ab9f3f90f77c61bc9.html?rec_flag=default&_wkts_=1687763240420
+
+multipath -V
+multipath-tools v0.4.9 (05/33, 2016)
+debuginfo-install device-mapper-multipath-0.4.9-136.el7_9.x86_64
+gdb attach `pidof multipathd`
+
+rpmbuild -ba SPECS/device-mapper-multipath.spec
+
+b fail_path
+c
+#0  0x000055555555a250 in fail_path ()
+#1  0x000055555555d515 in check_path ()
+#2  0x000055555555dbca in checkerloop ()
+#3  0x00007ffff7bc6ea5 in start_thread (arg=0x7ffff7f88700) at pthread_create.c:307
+#4  0x00007ffff67b8b0d in clone () at ../sysdeps/unix/sysv/linux/x86_64/clone.S:111
+
+
+Jun 26 17:01:10 node1 multipathd: checker failed path 8:16 in map mpatha
+Jun 26 17:01:10 node1 kernel: device-mapper: multipath: 253:3: Failing path 8:16.
+Jun 26 17:01:10 node1 multipathd: mpatha: remaining active paths: 1
+
+参考日志:
+Jun 26 17:38:30 node1 systemd: multipathd.service: main process exited, code=killed, status=9/KILL
+Jun 26 17:38:30 node1 systemd: Unit multipathd.service entered failed state.
+Jun 26 17:38:30 node1 systemd: multipathd.service failed.
+Jun 26 17:38:30 node1 multipathd: mpatha: load table [0 209715200 multipath 0 0 2 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1]
+Jun 26 17:38:30 node1 multipathd: mpatha: event checker started
+Jun 26 17:38:30 node1 multipathd: path checkers start up
+Jun 26 17:39:18 node1 multipathd: checker failed path 8:16 in map mpatha
+Jun 26 17:39:18 node1 multipathd: mpatha: remaining active paths: 1
+Jun 26 17:39:59 node1 multipathd: mpatha: sdb - directio checker reports path is up
+Jun 26 17:39:59 node1 multipathd: 8:16: reinstated
+Jun 26 17:39:59 node1 multipathd: mpatha: remaining active paths: 2
+Jun 26 17:42:14 node1 multipathd: checker failed path 8:16 in map mpatha
+Jun 26 17:42:14 node1 multipathd: mpatha: remaining active paths: 1
+Jun 26 17:42:39 node1 multipathd: mpatha: sdb - directio checker reports path is down
+Jun 26 17:42:45 node1 multipathd: mpatha: sdb - directio checker reports path is up
+Jun 26 17:42:45 node1 multipathd: 8:16: reinstated
+Jun 26 17:42:45 node1 multipathd: mpatha: remaining active paths: 2
+
+
+multipathd\main.c -> main (int argc, char *argv[])
+pthread_create(&check_thr, &misc_attr, checkerloop, vecs)
+  check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
+    conf = get_multipath_config()
+    newstate = path_offline(pp)
+    sysfs_attr_get_value(parent, "state", buff, sizeof(buff)) -> 通过udev读路径状态,  cat /sys/devices/platform/host15/session2/target15:0:0/15:0:0:1/state -> offline
+    fail_path (struct path * pp, int del_active)
+      condlog(2, "checker failed path %s in map %s" -> checker failed path
+      dm_fail_path(pp->mpp->alias, pp->dev_t)
+        snprintf(message, 32, "fail_path %s", path) -> 生成路径故障消息, 比如(failed path 8:16)
+        dm_message(mapname, message)
+          libmp_dm_task_create(DM_DEVICE_TARGET_MSG) -> type
+          dm_task_set_message(dmt, message)
+          dm_task_no_open_count(dmt)
+          libmp_dm_task_run(dmt)
+            dm_task_run(dmt) -> libmultipath：使用互斥锁保护 acy libdevmapper 调用 dm_udev_wait() 和 dm_task_run() 可以访问 libdevmapper 中的全局/静态状态。 它们需要通过我们的多线程库中的锁进行保护，修改后的调用序列需要修复 dmevents 测试：必须将 devmapper.c 添加到 dmevents-test_OBJDEPS 以捕获对 dm_task_run() 的调用。 另外，setup() 中对 dmevent_poll_supported() 的调用将导致 init_versions() 被调用，这需要在测试设置阶段绕过包装器, libdevmapper, __strncpy_sse2_unaligned () 
+            at ../sysdeps/x86_64/multiarch/strcpy-sse2-unaligned.S:43, 最终发ioctl给内核, lvm2项目 -> int dm_task_run(struct dm_task *dmt)
+      if (del_active) -> update_queue_mode_del_path(pp->mpp)
+
+
+
+cat /etc/multipath.conf
+multipaths {
+	multipath {
+		wwid			wwn-0x6000e0000002c2353232376e24cfcb58
+		alias			yellow
+		path_grouping_policy	multibus
+		path_selector		"round-robin 0"
+		failback		manual
+		rr_weight		priorities
+		no_path_retry		5
+	}
+}
+
+
+
+
+gdb 调试信息, debuginfo-install  device-mapper, 
+
+udev rule: /usr/lib/udev/rules.d/62-multipath.rules
+(gdb) p * (struct udev_device *) 0x555555799b40
+$4 = {
+  udev = 0x555555769210, 
+  parent_device = 0x55555579a460, 
+  syspath = 0x555555799d10 "/sys/devices/platform/host15/session2/target15:0:0/15:0:0:1", 
+  devpath = 0x555555799d14 "/devices/platform/host15/session2/target15:0:0/15:0:0:1", 
+  sysname = 0x55555579a010 "15:0:0:1", 
+  sysnum = 0x55555579a017 "1", 
+  devnode = 0x0, 
+  devnode_mode = 0, 
+  devnode_uid = 0, 
+  devnode_gid = 0, 
+  subsystem = 0x55555579a030 "scsi", 
+  devtype = 0x55555579a6a0 "scsi_device", 
+  driver = 0x0, 
+  action = 0x0, 
+  devpath_old = 0x0, 
+  id_filename = 0x0, 
+  envp = 0x0, 
+  monitor_buf = 0x0, 
+  monitor_buf_len = 0, 
+---Type <return> to continue, or q <return> to quit---
+  devlinks_list = {
+    udev = 0x555555769210, 
+    node = {
+      next = 0x555555799bd8, 
+      prev = 0x555555799bd8
+    }, 
+    entries = 0x0, 
+    entries_cur = 0, 
+    entries_max = 0, 
+    unique = true
+  }, 
+  properties_list = {
+    udev = 0x555555769210, 
+    node = {
+      next = 0x555555799d60, 
+      prev = 0x55555579a050
+    }, 
+    entries = 0x555555799e00, 
+    entries_cur = 5, 
+    entries_max = 64, 
+---Type <return> to continue, or q <return> to quit---
+    unique = true
+  }, 
+  sysattr_value_list = {
+    udev = 0x555555769210, 
+    node = {
+      next = 0x55555579a360, 
+      prev = 0x55555579a0d0
+    }, 
+    entries = 0x55555579a150, 
+    entries_cur = 5, 
+    entries_max = 64, 
+    unique = true
+  }, 
+  sysattr_list = {
+    udev = 0x555555769210, 
+    node = {
+      next = 0x555555799c68, 
+      prev = 0x555555799c68
+    }, 
+    entries = 0x0, 
+---Type <return> to continue, or q <return> to quit---
+    entries_cur = 0, 
+    entries_max = 0, 
+    unique = false
+  }, 
+  tags_list = {
+    udev = 0x555555769210, 
+    node = {
+      next = 0x555555799c98, 
+      prev = 0x555555799c98
+    }, 
+    entries = 0x0, 
+    entries_cur = 0, 
+    entries_max = 0, 
+    unique = true
+  }, 
+  seqnum = 0, 
+  usec_initialized = 0, 
+  devlink_priority = 0, 
+  refcount = 1, 
+  devnum = 0, 
+---Type <return> to continue, or q <return> to quit---
+  ifindex = 0, 
+  watch_handle = -1, 
+  maj = 0, 
+  min = 0, 
+  parent_set = true, 
+  subsystem_set = true, 
+  devtype_set = true, 
+  devlinks_uptodate = false, 
+  envp_uptodate = false, 
+  tags_uptodate = false, 
+  driver_set = false, 
+  info_loaded = false, 
+  db_loaded = false, 
+  uevent_loaded = true, 
+  is_initialized = false, 
+  sysattr_list_read = false, 
+  db_persist = false
+}
+
+
+multipathd/main.c -> main
+pthread_create(&uevq_thr, &misc_attr, uevqloop, vecs)
+uevqloop (void * ap)
+  uev_trigger
+    uev_pathfail_check(struct uevent *uev, struct vectors *vecs)
+      if (strncmp(action, "PATH_FAILED", 11)) -> 相等false(0) -> 内核 queue_work(dm_mpath_wq, &m->trigger_event) -> dm_path_uevent(DM_UEVENT_PATH_FAILED -> 用户态 PATH_FAILED
+      pp = find_path_by_devt(vecs->pathvec, devt)
+      r = io_err_stat_handle_pathfail(pp) -> 处理路径错误
+        marginal_path_check_enabled
+        path->state = PATH_DOWN -> 标记路径状态为down
+        path->dmstate = PSTATE_FAILED
+        update_queue_mode_del_path(path->mpp)
+          enter_recovery_mode
+
