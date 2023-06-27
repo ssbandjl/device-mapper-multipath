@@ -45,7 +45,7 @@ pthread_create(&check_thr, &misc_attr, checkerloop, vecs)
   check_path (struct vectors * vecs, struct path * pp, unsigned int ticks)
     conf = get_multipath_config()
     newstate = path_offline(pp)
-    sysfs_attr_get_value(parent, "state", buff, sizeof(buff)) -> 通过udev读路径状态,  cat /sys/devices/platform/host15/session2/target15:0:0/15:0:0:1/state -> offline
+    sysfs_attr_get_value(parent, "state", buff, sizeof(buff)) -> 通过udev读路径状态,  cat /sys/devices/platform/host15/session2/target15:0:0/15:0:0:1/state -> offline -> 何时设置为 offline
     fail_path (struct path * pp, int del_active)
       condlog(2, "checker failed path %s in map %s" -> checker failed path
       dm_fail_path(pp->mpp->alias, pp->dev_t)
@@ -199,3 +199,23 @@ uevqloop (void * ap)
         update_queue_mode_del_path(path->mpp)
           enter_recovery_mode
 
+
+
+(gdb) p * (struct udev_device *) 0x7f3e40006e90
+$12 = {
+  udev = 0x55be1a5e1210, 
+  parent_device = 0x7f3e400077b0, 
+  syspath = 0x7f3e40007060 "/sys/devices/platform/host14/session1/target14:0:0/14:0:0:1", 
+  devpath = 0x7f3e40007064 "/devices/platform/host14/session1/target14:0:0/14:0:0:1", 
+  sysname = 0x7f3e40007360 "14:0:0:1", 
+  sysnum = 0x7f3e40007367 "1", 
+  devnode = 0x0, 
+  devnode_mode = 0, 
+  devnode_uid = 0, 
+  devnode_gid = 0, 
+  subsystem = 0x7f3e40007380 "scsi", 
+  devtype = 0x7f3e400079f0 "scsi_device", 
+
+命令模式: multipathd -k
+show devices
+show config
