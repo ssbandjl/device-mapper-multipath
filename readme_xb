@@ -219,3 +219,24 @@ $12 = {
 命令模式: multipathd -k
 show devices
 show config
+
+
+Jun 27 17:40:15 node1 kernel: device-mapper: multipath: 253:3: Failing path 8:16.
+Jun 27 17:40:23 node1 systemd: multipathd.service start operation timed out. Terminating.
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:38:53 | mpatha: load table [0 209715200 multipath 0 0 2 1 service-time 0 1 1 8:16 1 service-time 0 1 1 8:32 1]
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:38:53 | mpatha: event checker started
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:38:53 | path checkers start up
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | sdc: remove path (uevent)
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | mpatha: load table [0 209715200 multipath 0 0 1 1 service-time 0 1 1 8:16 1]
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | sdc [8:32]: path removed from map mpatha
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | sdb: mark as failed
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | mpatha: remaining active paths: 0
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | sdb: remove path (uevent)
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | mpatha: map in use
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | mpatha: can't flush
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | mpatha: load table [0 209715200 multipath 0 0 0 0]
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | sdb [8:16]: path removed from map mpatha
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:23 | mpatha: stop event checker thread (140378965067520)
+Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:23 | --------shut down-------
+
+
