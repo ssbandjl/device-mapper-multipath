@@ -46,6 +46,7 @@ pthread_create(&check_thr, &misc_attr, checkerloop, vecs)
     conf = get_multipath_config()
     newstate = path_offline(pp)
     sysfs_attr_get_value(parent, "state", buff, sizeof(buff)) -> 通过udev读路径状态,  cat /sys/devices/platform/host15/session2/target15:0:0/15:0:0:1/state -> offline -> 何时设置为 offline
+    fail_path(pp, 1) -> newstate == PATH_DOWN
     fail_path (struct path * pp, int del_active)
       condlog(2, "checker failed path %s in map %s" -> checker failed path
       dm_fail_path(pp->mpp->alias, pp->dev_t)
@@ -239,4 +240,9 @@ Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:15 | sdb [8:16]: path removed fro
 Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:23 | mpatha: stop event checker thread (140378965067520)
 Jun 27 17:40:23 node1 multipathd: Jun 27 17:40:23 | --------shut down-------
 
+
+日志级别:
+-v "level" Verbosity level. Print additional information while running multipathd. A level of 0 means only print errors. A level of 3 or greater prints debugging information as well
+vim /usr/lib/systemd/system/multipathd.service
+/sbin/multipathd -v 3
 
