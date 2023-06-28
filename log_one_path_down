@@ -1,0 +1,144 @@
+Jun 28 08:51:23 node1 multipathd: sdb: path state = running
+Jun 28 08:51:23 node1 multipathd: sdb: get_state
+Jun 28 08:51:23 node1 multipathd: directio: starting new request
+Jun 28 08:51:23 node1 multipathd: directio: async io pending
+Jun 28 08:51:23 node1 multipathd: sdb: directio state = pending
+Jun 28 08:51:23 node1 multipathd: sdb: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:24 node1 multipathd: sdb: path state = running
+Jun 28 08:51:24 node1 multipathd: sdb: get_state
+Jun 28 08:51:24 node1 multipathd: directio: async io pending
+Jun 28 08:51:24 node1 multipathd: sdb: directio state = pending
+Jun 28 08:51:24 node1 multipathd: sdb: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:25 node1 multipathd: sdb: path state = running
+Jun 28 08:51:25 node1 multipathd: sdb: get_state
+Jun 28 08:51:25 node1 multipathd: directio: async io pending
+Jun 28 08:51:25 node1 multipathd: sdb: directio state = pending
+Jun 28 08:51:25 node1 multipathd: sdb: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:26 node1 multipathd: sdb: path state = running
+Jun 28 08:51:26 node1 multipathd: sdb: get_state
+Jun 28 08:51:26 node1 multipathd: directio: async io pending
+Jun 28 08:51:26 node1 multipathd: sdb: directio state = pending
+Jun 28 08:51:26 node1 multipathd: sdb: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:27 node1 multipathd: sdb: path state = running
+Jun 28 08:51:27 node1 multipathd: sdb: get_state
+Jun 28 08:51:27 node1 multipathd: directio: async io pending
+Jun 28 08:51:27 node1 multipathd: sdb: directio state = pending
+Jun 28 08:51:27 node1 multipathd: sdb: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:28 node1 multipathd: sdb: path state = running
+Jun 28 08:51:28 node1 multipathd: sdb: get_state
+Jun 28 08:51:28 node1 multipathd: directio: async io pending
+Jun 28 08:51:28 node1 multipathd: sdb: directio state = pending
+Jun 28 08:51:28 node1 multipathd: sdb: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:28 node1 multipathd: sdc: path state = running
+Jun 28 08:51:28 node1 multipathd: sdc: get_state
+Jun 28 08:51:28 node1 multipathd: directio: starting new request
+Jun 28 08:51:28 node1 multipathd: directio: async io pending
+Jun 28 08:51:28 node1 multipathd: sdc: directio state = pending
+Jun 28 08:51:28 node1 multipathd: sdc: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:29 node1 multipathd: sdb: path state = blocked
+Jun 28 08:51:29 node1 multipathd: sdc: path state = running
+Jun 28 08:51:29 node1 multipathd: sdc: get_state
+Jun 28 08:51:29 node1 multipathd: directio: io finished 4096/0
+Jun 28 08:51:29 node1 multipathd: sdc: directio state = up
+Jun 28 08:51:29 node1 multipathd: mpatha: disassemble map [0 0 2 1 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:29 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 1 A 0 1 2 8:16 A 0 0 1 E 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:29 node1 multipathd: sdc: mask = 0x8
+Jun 28 08:51:29 node1 multipathd: sdc: path state = running
+Jun 28 08:51:29 node1 multipathd: sdc: const prio = 1
+Jun 28 08:51:30 node1 multipathd: sdb: path state = blocked
+Jun 28 08:51:31 node1 multipathd: sdb: path state = blocked
+Jun 28 08:51:32 node1 multipathd: sdb: path state = blocked
+Jun 28 08:51:33 node1 multipathd: sdb: path state = blocked
+Jun 28 08:51:34 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:51:34 node1 multipathd: mpatha: disassemble map [0 0 2 1 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:34 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 1 A 0 1 2 8:16 A 0 0 1 E 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:34 node1 kernel: device-mapper: multipath: 253:3: Failing path 8:16.
+Jun 28 08:51:34 node1 multipathd: checker failed path 8:16 in map mpatha
+Jun 28 08:51:34 node1 multipathd: mpatha: remaining active paths: 1
+Jun 28 08:51:34 node1 multipathd: mpatha: devmap event #1
+Jun 28 08:51:34 node1 multipathd: mpatha: disassemble map [0 0 2 1 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:34 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 1 A 0 1 2 8:16 F 1 0 1 E 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:34 node1 multipathd: mpatha: rr_weight = 1 (internal default)
+Jun 28 08:51:34 node1 multipathd: mpatha: pgfailover = -1 (internal default)
+Jun 28 08:51:34 node1 multipathd: mpatha: no_path_retry = 0 (internal default)
+Jun 28 08:51:34 node1 multipathd: mpatha: pg_timeout = NONE (internal default)
+Jun 28 08:51:34 node1 multipathd: mpatha: flush_on_last_del = DISABLED (internal default)
+Jun 28 08:51:34 node1 multipathd: uevent 'change' from '/devices/virtual/block/dm-3'
+Jun 28 08:51:34 node1 multipathd: dm-3: add map (uevent)
+Jun 28 08:51:34 node1 multipathd: mpatha: Reassign existing device-mapper devices
+Jun 28 08:51:34 node1 multipathd: sdc: checking holder
+Jun 28 08:51:34 node1 multipathd: sdc: holder already correct
+Jun 28 08:51:34 node1 multipathd: sdb: checking holder
+Jun 28 08:51:34 node1 multipathd: sdb: holder already correct
+Jun 28 08:51:34 node1 multipathd: io_err_stat: sdb: cannot handle pathfail uevent
+
+[root@node2 ~]# ./restart_nic.sh &
+[1] 3667747
+Wed Jun 28 08:51:18 CST 2023
+
+
+Jun 28 08:51:39 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:51:39 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:39 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:44 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:51:44 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:44 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:49 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:51:49 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:49 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:49 node1 multipathd: sdc: path state = running
+Jun 28 08:51:49 node1 multipathd: sdc: get_state
+Jun 28 08:51:49 node1 multipathd: directio: starting new request
+Jun 28 08:51:49 node1 multipathd: directio: async io pending
+Jun 28 08:51:49 node1 multipathd: sdc: directio state = pending
+Jun 28 08:51:49 node1 multipathd: sdc: checker msg is "directio checker is waiting on aio"
+Jun 28 08:51:50 node1 multipathd: sdc: path state = running
+Jun 28 08:51:50 node1 multipathd: sdc: get_state
+Jun 28 08:51:50 node1 multipathd: directio: io finished 4096/0
+Jun 28 08:51:50 node1 multipathd: sdc: directio state = up
+Jun 28 08:51:50 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:50 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:50 node1 multipathd: sdc: mask = 0x8
+Jun 28 08:51:50 node1 multipathd: sdc: path state = running
+Jun 28 08:51:50 node1 multipathd: sdc: const prio = 1
+Jun 28 08:51:54 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:51:54 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:54 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:51:59 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:51:59 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:51:59 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:04 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:52:04 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:52:04 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:09 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:52:09 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:52:09 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:10 node1 multipathd: sdc: path state = running
+Jun 28 08:52:10 node1 multipathd: sdc: get_state
+Jun 28 08:52:10 node1 multipathd: directio: starting new request
+Jun 28 08:52:10 node1 multipathd: directio: async io pending
+Jun 28 08:52:10 node1 multipathd: sdc: directio state = pending
+Jun 28 08:52:10 node1 multipathd: sdc: checker msg is "directio checker is waiting on aio"
+Jun 28 08:52:11 node1 multipathd: sdc: path state = running
+Jun 28 08:52:11 node1 multipathd: sdc: get_state
+Jun 28 08:52:11 node1 multipathd: directio: io finished 4096/0
+Jun 28 08:52:11 node1 multipathd: sdc: directio state = up
+Jun 28 08:52:11 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:52:11 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:11 node1 multipathd: sdc: mask = 0x8
+Jun 28 08:52:11 node1 multipathd: sdc: path state = running
+Jun 28 08:52:11 node1 multipathd: sdc: const prio = 1
+Jun 28 08:52:14 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:52:14 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:52:14 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:19 node1 multipathd: sdb: path state = transport-offline
+Jun 28 08:52:19 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:52:19 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:24 node1 multipathd: sdb: path state = running
+Jun 28 08:52:24 node1 multipathd: sdb: get_state
+Jun 28 08:52:24 node1 multipathd: directio: io finished 18446744073709551611/0
+Jun 28 08:52:24 node1 multipathd: sdb: directio state = down
+Jun 28 08:52:24 node1 multipathd: sdb: checker msg is "directio checker reports path is down"
+Jun 28 08:52:24 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
+Jun 28 08:52:24 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
+Jun 28 08:52:24 node1 multipathd: mpatha: sdb - directio checker reports path is down
