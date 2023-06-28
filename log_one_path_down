@@ -142,3 +142,11 @@ Jun 28 08:52:24 node1 multipathd: sdb: checker msg is "directio checker reports 
 Jun 28 08:52:24 node1 multipathd: mpatha: disassemble map [0 0 2 2 service-time 0 1 2 8:16 1 1 service-time 0 1 2 8:32 1 1 ]
 Jun 28 08:52:24 node1 multipathd: mpatha: disassemble status [2 0 0 0 2 2 E 0 1 2 8:16 F 1 0 1 A 0 1 2 8:32 A 0 0 1 ]
 Jun 28 08:52:24 node1 multipathd: mpatha: sdb - directio checker reports path is down
+
+
+
+
+
+[root@node2 ~]# ./restart_nic.sh &
+[1] 247813
+Wed Jun 28 17:30:48 CST 2023

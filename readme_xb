@@ -59,6 +59,7 @@ pthread_create(&check_thr, &misc_attr, checkerloop, vecs)
             dm_task_run(dmt) -> libmultipath：使用互斥锁保护 acy libdevmapper 调用 dm_udev_wait() 和 dm_task_run() 可以访问 libdevmapper 中的全局/静态状态。 它们需要通过我们的多线程库中的锁进行保护，修改后的调用序列需要修复 dmevents 测试：必须将 devmapper.c 添加到 dmevents-test_OBJDEPS 以捕获对 dm_task_run() 的调用。 另外，setup() 中对 dmevent_poll_supported() 的调用将导致 init_versions() 被调用，这需要在测试设置阶段绕过包装器, libdevmapper, __strncpy_sse2_unaligned () 
             at ../sysdeps/x86_64/multiarch/strcpy-sse2-unaligned.S:43, 最终发ioctl给内核, lvm2项目 -> int dm_task_run(struct dm_task *dmt)
       if (del_active) -> update_queue_mode_del_path(pp->mpp)
+    update_multipath_strings -> 同步内核状态
 
 
 
@@ -190,6 +191,17 @@ multipathd/main.c -> main
 pthread_create(&uevq_thr, &misc_attr, uevqloop, vecs)
 uevqloop (void * ap)
   uev_trigger
+    uev_add_map
+      dm-3: add map (uevent)
+      rc = ev_add_map(uev->kernel, alias, vecs)
+        dm_reassign
+          dm_dev_t(mapname, &dev_t[0], 32)
+            dm_task_create(DM_DEVICE_INFO) -> 6 -> lvm -> static struct cmd_data _cmd_data_v4[]  -> {"info",	DM_DEV_STATUS,		{4, 0, 0}}
+          if (!(dmt = dm_task_create(DM_DEVICE_DEPS)))
+          if (!dm_task_set_name(dmt, mapname))
+          dm_task_no_open_count(dmt)
+          if (!(deps = dm_task_get_deps(dmt)))
+          sysfs_check_holders(dm_dep, dev_t)
     uev_pathfail_check(struct uevent *uev, struct vectors *vecs)
       if (strncmp(action, "PATH_FAILED", 11)) -> 相等false(0) -> 内核 queue_work(dm_mpath_wq, &m->trigger_event) -> dm_path_uevent(DM_UEVENT_PATH_FAILED -> 用户态 PATH_FAILED
       pp = find_path_by_devt(vecs->pathvec, devt)
@@ -251,3 +263,26 @@ vim /usr/lib/systemd/system/multipathd.service
 状态机:
 sdb: path state = blocked -> sdb: path state = transport-offline -> sdb: directio state = down
 
+
+多路径配置:
+[root@node1 H3Linux_patches]# multipath -ll
+mpatha (36000e0000002c2353232376e24cfcb58) dm-3 IET     ,VIRTUAL-DISK    
+size=100G features='0' hwhandler='0' wp=rw
+|-+- policy='service-time 0' prio=1 status=enabled
+| `- 14:0:0:1 sdb     8:16  active ready running
+`-+- policy='service-time 0' prio=1 status=active
+  `- 15:0:0:1 sdc     8:32  active ready running
+
+
+
+检查扇区0
+newstate = get_state(pp, 1, newstate)
+get_state (struct path * pp, int daemon, int oldstate)
+state = checker_check(c, oldstate)
+int checker_check
+c->check = (int (*)(struct checker *)) dlsym(c->handle, "libcheck_check")
+libcheck_check
+  ret = sg_read(c->fd, &buf[0], 4096, &sbuf[0],
+		      SENSE_BUFF_LEN, c->timeout)
+    while (((res = ioctl(sg_fd, SG_IO, &io_hdr)) < 0) && (EINTR == errno));
+  MSG(c, MSG_READSECTOR0_UP)
